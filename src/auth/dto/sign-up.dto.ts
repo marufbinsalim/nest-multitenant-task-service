@@ -16,7 +16,7 @@ export class SignUpDto {
     example: 'password123',
     minLength: 6,
   })
-  @Transform(({ obj }) => obj.password || obj['password:'])
+
   @IsString()
   @IsNotEmpty()
   @MinLength(6)
