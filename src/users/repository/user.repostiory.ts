@@ -1,24 +1,28 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { User } from "../entities/user.enitity";
+import { Injectable, Inject } from "@nestjs/common";
+import { eq } from "drizzle-orm";
+import { DRIZZLE_DB } from "../../database/database.module";
+import type { DrizzleDB } from "../../database/drizzle.config";
+import { users, User, NewUser } from "../../database/schema";
 
 @Injectable()
 export class UserRepository {
   constructor(
-    @InjectRepository(User)
-    private readonly repo: Repository<User>,
+    @Inject(DRIZZLE_DB)
+    private readonly db: DrizzleDB,
   ) {}
 
-  findByEmail(email: string) {
-    return this.repo.findOne({ where: { email } });
+  async findByEmail(email: string): Promise<User | undefined> {
+    const result = await this.db.select().from(users).where(eq(users.email, email));
+    return result[0];
   }
 
-  findById(id: number) {
-    return this.repo.findOne({ where: { id } });
+  async findById(id: number): Promise<User | undefined> {
+    const result = await this.db.select().from(users).where(eq(users.id, id));
+    return result[0];
   }
 
-  createUser(data: Partial<User>) {
-    return this.repo.save(this.repo.create(data));
+  async createUser(data: NewUser): Promise<User> {
+    const result = await this.db.insert(users).values(data).returning();
+    return result[0];
   }
 }

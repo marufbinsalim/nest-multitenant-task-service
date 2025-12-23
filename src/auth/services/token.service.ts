@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { RefreshTokenRepository } from '../repository/refreshtoken.repository';
+import { User } from '../../database/schema';
 
 @Injectable()
 export class TokenService {
@@ -9,10 +10,7 @@ export class TokenService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async generateAuthTokens(user: {
-    id: number;
-    email: string;
-  }): Promise<{ accessToken: string; refreshToken: string }> {
+  async generateAuthTokens(user: User): Promise<{ accessToken: string; refreshToken: string }> {
 
     const payload = { sub: user.id, email: user.email };
 
@@ -29,7 +27,7 @@ export class TokenService {
 
     await this.refreshTokenRepository.createRefreshToken(
       refreshTokenValue,
-      user as any,
+      user,
       new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
     );
 

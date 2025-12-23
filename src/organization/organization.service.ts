@@ -2,9 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { TenantService } from 'src/tenant/tenant.service';
-import { Repository } from 'typeorm';
-import { Organization } from './entities/organization.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { OrganizationRepository } from './repositories/organization.reporisory';
 
@@ -26,8 +23,9 @@ export class OrganizationService {
     try {
       // Save organization
       const newData = {
-        ...createOrganizationDto,
-        schema_name: schemaName,
+        name: createOrganizationDto.name,
+        description: createOrganizationDto.description,
+        schemaName: schemaName,
         userId,
       }
       const organization = await this.organizationRepo.create(newData);

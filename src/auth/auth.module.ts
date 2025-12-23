@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './services/auth.service';
 import { AuthController } from './auth.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/users/entities/user.enitity';
-import { RefreshToken } from './entities/refresh-token.entity';
+import { DatabaseModule } from '../database/database.module';
 import { UsersModule } from '../users/users.module';
 import { TokenService } from './services/token.service';
 import { RefreshTokenRepository } from './repository/refreshtoken.repository';
@@ -11,7 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, RefreshToken]),
+    DatabaseModule,
     UsersModule,
     JwtModule,
   ],
