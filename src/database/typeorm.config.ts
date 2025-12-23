@@ -1,6 +1,6 @@
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModuleAsyncOptions } from "@nestjs/typeorm";
-import { Users } from "src/users/entities/user.enitity";
+import * as path from "path";
 
 export const typeOrmConfig: TypeOrmModuleAsyncOptions = {
     imports: [ConfigModule],
@@ -11,7 +11,7 @@ export const typeOrmConfig: TypeOrmModuleAsyncOptions = {
         ssl: {
             rejectUnauthorized: false,
         },
-        entities: [Users],
+        entities: [path.join(__dirname, '/../**/*.entity{.ts,.js}')],
         autoLoadEntities: true,
         synchronize: true,
     })
