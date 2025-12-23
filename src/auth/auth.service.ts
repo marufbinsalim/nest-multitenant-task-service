@@ -9,6 +9,7 @@ import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
 import { RefreshDto } from './dto/refresh.dto';
 import { LogoutDto } from './dto/logout.dto';
+import { MeDto } from './dto/me.dto';
 
 @Injectable()
 export class AuthService {
@@ -23,16 +24,12 @@ export class AuthService {
   async signUp(signUpDto: SignUpDto): Promise<{ accessToken: string; refreshToken: string }> {
     const { email, password } = signUpDto;
 
-    // Check if user already exists
     const existingUser = await this.userRepository.findOne({ where: { email } });
     if (existingUser) {
       throw new ConflictException('User already exists');
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create user
     const user = this.userRepository.create({ email, password: hashedPassword });
     await this.userRepository.save(user);
 
@@ -49,13 +46,11 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    // Generate tokens
     return this.generateTokens(user);
   }
 
@@ -84,21 +79,35 @@ export class AuthService {
 
   async logout(logoutDto: LogoutDto): Promise<void> {
     const { refreshToken } = logoutDto;
-
-    // Delete refresh token
     await this.refreshTokenRepository.delete({ token: refreshToken });
   }
+
+
+  async getUser(meDto: MeDto): Promise<any> {
+    const { accessToken } = meDto;
+    try {
+      const payload = this.jwtService.verify(accessToken, { secret: process.env.JWT_SECRET || 'access-secret' });
+
+      const user = await this.userRepository.findOne({ where: { id: payload.sub } });
+      if (!user) {
+        throw new UnauthorizedException('Invalid access token');
+      }
+      return user;
+    }
+    catch (error) {
+      throw new UnauthorizedException('Invalid access token');
+    }
+  }
+
 
   private async generateTokens(user: User): Promise<{ accessToken: string; refreshToken: string }> {
     const payload = { sub: user.id, email: user.email };
 
-    // Generate access token
     const accessToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET || 'access-secret',
-      expiresIn: '15m',
+      expiresIn: '10m',
     });
 
-    // Generate refresh token
     const refreshTokenValue = this.jwtService.sign(payload, {
       secret: process.env.JWT_REFRESH_SECRET || 'refresh-secret',
       expiresIn: '7d',
@@ -107,7 +116,7 @@ export class AuthService {
     // Save refresh token to DB
     const refreshTokenEntity = this.refreshTokenRepository.create({
       token: refreshTokenValue,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       user,
     });
     await this.refreshTokenRepository.save(refreshTokenEntity);

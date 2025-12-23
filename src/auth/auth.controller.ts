@@ -1,15 +1,37 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
 import { RefreshDto } from './dto/refresh.dto';
 import { LogoutDto } from './dto/logout.dto';
+import { MeDto } from './dto/me.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+
+  @Post('me')
+  @ApiOperation({ summary: 'Get Logged in user details' })
+  @ApiResponse({
+    status: 200,
+    description: 'User details',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'number', example: 1 },
+        email: { type: 'string', example: 'user@example.com' },
+      },
+    },
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async getLoggedInUser(@Body() meDto: MeDto) {
+    return this.authService.getUser(meDto);
+    
+  }
+
 
   @Post('sign-up')
   @ApiOperation({ summary: 'User sign up' })
@@ -31,6 +53,7 @@ export class AuthController {
   }
 
   @Post('sign-in')
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'User sign in' })
   @ApiResponse({
     status: 200,
