@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { OrganizationService } from './organization.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
@@ -6,12 +6,12 @@ import { AuthGuard } from 'src/guards/auth/auth.guard';
 
 @Controller('organization')
 export class OrganizationController {
-  constructor(private readonly organizationService: OrganizationService) {}
+  constructor(private readonly organizationService: OrganizationService) { }
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createOrganizationDto: CreateOrganizationDto) {
-    return this.organizationService.create(createOrganizationDto);
+  create(@Body() createOrganizationDto: CreateOrganizationDto, @Req() req) {
+    return this.organizationService.create(createOrganizationDto, req);
   }
 
   @Get()

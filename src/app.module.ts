@@ -7,6 +7,8 @@ import { typeOrmConfig } from './database/typeorm.config';
 import { OrganizationModule } from './organization/organization.module';
 import { AuthModule } from './auth/auth.module';
 import { GuardsModule } from './guards/guards.module';
+import { TenantService } from './tenant/tenant.service';
+import { TenantModule } from './tenant/tenant.module';
 
 @Module({
   imports: [
@@ -16,9 +18,10 @@ import { GuardsModule } from './guards/guards.module';
     TypeOrmModule.forRootAsync(typeOrmConfig),
     AuthModule,
     OrganizationModule,
-    GuardsModule
+    GuardsModule,
+    TenantModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, TenantService],
 })
 export class AppModule { }
