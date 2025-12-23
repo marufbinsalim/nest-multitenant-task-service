@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { GuardsModule } from './guards/guards.module';
 import { TenantService } from './tenant/tenant.service';
 import { TenantModule } from './tenant/tenant.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { TenantModule } from './tenant/tenant.module';
     AuthModule,
     OrganizationModule,
     GuardsModule,
-    TenantModule
+    TenantModule,
+    UsersModule
   ],
   controllers: [AppController],
   providers: [AppService, TenantService],

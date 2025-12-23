@@ -15,7 +15,6 @@ export class SignInDto {
     description: 'User password',
     example: 'password123',
   })
-  @Transform(({ obj }) => obj.password || obj['password:'])
   @IsString()
   @IsNotEmpty()
   password: string;
