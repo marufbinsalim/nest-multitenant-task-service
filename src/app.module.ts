@@ -5,9 +5,10 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './database/typeorm.config';
 import { OrganizationModule } from './organization/organization.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [
+  imports: [AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
