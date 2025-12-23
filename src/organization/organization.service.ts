@@ -6,13 +6,12 @@ import { Repository } from 'typeorm';
 import { Organization } from './entities/organization.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
+import { OrganizationRepository } from './repositories/organization.reporisory';
 
 @Injectable()
 export class OrganizationService {
   constructor(
-    @InjectRepository(Organization)
-    private readonly oragnizationRepo: Repository<Organization>,
-
+    private readonly organizationRepo: OrganizationRepository,
     private readonly tenantService: TenantService
   ) { }
 
@@ -26,11 +25,12 @@ export class OrganizationService {
 
     try {
       // Save organization
-      const organization = await this.oragnizationRepo.save({
+      const newData = {
         ...createOrganizationDto,
         schema_name: schemaName,
         userId,
-      });
+      }
+      const organization = await this.organizationRepo.create(newData);
 
       return organization;
     } catch (err) {
