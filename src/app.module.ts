@@ -8,11 +8,12 @@ import { OrganizationModule } from './organization/organization.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [AuthModule,
+  imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync(typeOrmConfig),
+    AuthModule,
     OrganizationModule
   ],
   controllers: [AppController],
