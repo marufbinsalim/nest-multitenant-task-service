@@ -10,6 +10,7 @@ import { GuardsModule } from './guards/guards.module';
 import { TenantService } from './tenant/tenant.service';
 import { TenantModule } from './tenant/tenant.module';
 import { UsersModule } from './users/users.module';
+import { RolePermissionsModule } from './role-permissions/role-permissions.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { UsersModule } from './users/users.module';
     OrganizationModule,
     GuardsModule,
     TenantModule,
-    UsersModule
+    UsersModule,
+    RolePermissionsModule
   ],
   controllers: [AppController],
   providers: [AppService, TenantService],
