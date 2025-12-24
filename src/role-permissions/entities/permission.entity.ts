@@ -9,7 +9,7 @@ export class Permission {
     @Column({ unique: true })
     name: string;
 
-    @Column({ unique: true })
+    @Column({ unique: true, nullable: true })
     route?: string;
 
     @Column({ nullable: true })
