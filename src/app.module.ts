@@ -8,6 +8,7 @@ import { OrganizationModule } from './organization/organization.module';
 import { AuthModule } from './auth/auth.module';
 import { GuardsModule } from './guards/guards.module';
 import { UsersModule } from './users/users.module';
+import { RolePermissionsModule } from './role-permissions/role-permissions.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     OrganizationModule,
     GuardsModule,
-    UsersModule
+    UsersModule,
+    RolePermissionsModule
   ],
   controllers: [AppController],
   providers: [AppService],
