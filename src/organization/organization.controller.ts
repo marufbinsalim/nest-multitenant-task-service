@@ -3,6 +3,9 @@ import { OrganizationService } from './organization.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
+import type { AuthenticatedRequest } from 'src/common/types/authenticated-request.type';
+
+
 
 @Controller('organization')
 export class OrganizationController {
@@ -10,7 +13,7 @@ export class OrganizationController {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createOrganizationDto: CreateOrganizationDto, @Req() req) {
+  create(@Body() createOrganizationDto: CreateOrganizationDto, @Req() req: AuthenticatedRequest) {
     return this.organizationService.create(createOrganizationDto, req);
   }
 

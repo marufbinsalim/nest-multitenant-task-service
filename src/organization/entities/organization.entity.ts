@@ -12,9 +12,6 @@ export class Organization {
     @Column({ nullable: true })
     description?: string;
 
-    @Column({ unique: true })
-    schema_name: string;
-
     @Column({ default: true })
     is_active: boolean;
 
@@ -24,6 +21,8 @@ export class Organization {
     @UpdateDateColumn()
     updated_at: Date;
 
+    @Column({ nullable: false})
+    owner_id: string;
     @ManyToOne(() => User, (user) => user.organizations)
     @JoinColumn({ name: "owner_id" })
     user: User;
