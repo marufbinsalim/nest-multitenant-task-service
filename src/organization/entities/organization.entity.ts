@@ -1,5 +1,5 @@
 import { User } from "src/users/entities/user.enitity";
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('organizations')
 export class Organization {
@@ -25,5 +25,6 @@ export class Organization {
     updated_at: Date;
 
     @ManyToOne(() => User, (user) => user.organizations)
+    @JoinColumn({ name: "owner_id" })
     user: User;
 }
