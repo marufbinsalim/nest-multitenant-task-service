@@ -1,4 +1,5 @@
 import { User } from "src/users/entities/user.enitity";
+import { Member } from "src/members/entities/member.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('organizations')
@@ -26,4 +27,7 @@ export class Organization {
     @ManyToOne(() => User, (user) => user.organizations)
     @JoinColumn({ name: "owner_id" })
     user: User;
+
+    @OneToMany(() => Member, (member) => member.organization)
+    members: Member[];
 }

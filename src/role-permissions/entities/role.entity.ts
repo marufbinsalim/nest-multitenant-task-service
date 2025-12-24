@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Permission } from "./permission.entity";
 import { Organization } from "src/organization/entities/organization.entity";
+import { Member } from "src/members/entities/member.entity";
 import { RoleScope } from "../enums/role-scope.enum";
 
 @Entity('roles')
@@ -30,4 +31,7 @@ export class Role {
         inverseJoinColumn: { name: 'permissionId', referencedColumnName: 'id' }
     })
     permissions: Permission[];
+
+    @OneToMany(() => Member, (member) => member.role)
+    members: Member[];
 }
