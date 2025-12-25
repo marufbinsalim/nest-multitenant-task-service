@@ -1,5 +1,5 @@
 import { User } from "src/users/entities/user.enitity";
-import { Member } from "src/members/entities/member.entity";
+import { UserRole } from "src/user-roles/entities/user-role.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('organizations')
@@ -28,6 +28,6 @@ export class Organization {
     @JoinColumn({ name: "owner_id" })
     user: User;
 
-    @OneToMany(() => Member, (member) => member.organization)
-    members: Member[];
+    @OneToMany(() => UserRole, (userRole) => userRole.organization)
+    userRoles: UserRole[];
 }

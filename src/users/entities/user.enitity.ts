@@ -1,12 +1,12 @@
 import { RefreshToken } from 'src/auth/entities/refresh-token.entity';
 import { Organization } from 'src/organization/entities/organization.entity';
-import { Member } from 'src/members/entities/member.entity';
+import { UserRole } from 'src/user-roles/entities/user-role.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ unique: true })
   email: string;
@@ -20,6 +20,6 @@ export class User {
   @OneToMany(() => Organization, (organization) => organization.user)
   organizations: Organization[];
 
-  @OneToMany(() => Member, (member) => member.user)
-  members: Member[];
+  @OneToMany(() => UserRole, (userRole) => userRole.user)
+  userRoles: UserRole[];
 }

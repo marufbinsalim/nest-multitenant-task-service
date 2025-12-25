@@ -10,7 +10,7 @@ export class TokenService {
   ) {}
 
   async generateAuthTokens(user: {
-    id: number;
+    id: string;
     email: string;
   }): Promise<{ accessToken: string; refreshToken: string }> {
 

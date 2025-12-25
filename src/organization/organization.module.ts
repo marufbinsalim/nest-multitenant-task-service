@@ -5,11 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Organization } from './entities/organization.entity';
 import { OrganizationRepository } from './repositories/organization.reporisory';
 import { JwtModule } from '@nestjs/jwt';
+import { UserRolesModule } from 'src/user-roles/user-roles.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Organization]),
     JwtModule,
+    UserRolesModule,
   ],
   controllers: [OrganizationController],
   providers: [OrganizationService, OrganizationRepository],
