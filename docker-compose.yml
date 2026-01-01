@@ -1,0 +1,18 @@
+services:
+  core:
+    build: .
+    image: finzeka-core
+    command: node core/main.js
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+
+  audit-service:
+    build: .
+    image: finzeka-audit-service
+    command: node audit-service/main.js
+    ports:
+      - "50051:50051"
+    environment:
+      GRPC_PORT: 50051
