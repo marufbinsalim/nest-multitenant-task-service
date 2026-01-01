@@ -1,23 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { AUDIT_PACKAGE_NAME } from '../../../../types/proto/audit';
-import { join } from 'path';
-
+import { KafkaService } from './kafka.service';
 
 @Module({
-  imports: [ClientsModule.register([
-    {
-      name: AUDIT_PACKAGE_NAME,
-      transport: Transport.GRPC,
-      options: {
-        package: AUDIT_PACKAGE_NAME,
-        protoPath: join(__dirname, 'proto/audit.proto'),
-      },
-    },
-  ])],
+  imports: [],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, KafkaService],
 })
 export class AppModule {}

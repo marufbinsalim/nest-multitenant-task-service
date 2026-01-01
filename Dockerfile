@@ -27,7 +27,4 @@ RUN npm ci --omit=dev
 COPY --from=builder /app/dist/apps/audit-service ./audit-service
 COPY --from=builder /app/dist/apps/core ./core
 
-# Proto files
-COPY --from=builder /app/proto ./proto
-
-EXPOSE 3000 50051
+EXPOSE 3000 3001
